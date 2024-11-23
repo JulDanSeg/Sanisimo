@@ -2,7 +2,8 @@
     "compilerOptions": {
       "target": "esnext",                 
       "module": "commonjs",               
-      "jsx": "react-native",              
+      "jsx": "react-native",
+      "moduleResolution": "node",              
       "esModuleInterop": true,             
       "allowJs": true,                    
       "skipLibCheck": true,                

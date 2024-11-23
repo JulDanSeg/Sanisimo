@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { act, render, waitFor, fireEvent } from '@testing-library/react-native';
 import IMCScreen from '../../app/IMCScreen';
 import { auth, db } from 'F:/PROGRAMACIONXD/Javascript/Expo/Sanisimo/constants/firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
@@ -37,20 +37,27 @@ describe('IMCScreen Component', () => {
   test('Guarda correctamente los datos del usuario en Firestore', async () => {
     const navigateMock = jest.fn();
     const { getByPlaceholderText, getByText } = render(<IMCScreen navigation={{ navigate: navigateMock }} />);
-
+  
     // Simula ingreso de datos
     const pesoInput = getByPlaceholderText('Peso (kg)');
     const alturaInput = getByPlaceholderText('Altura (cm)');
     fireEvent.changeText(pesoInput, '70');
     fireEvent.changeText(alturaInput, '175');
-
+  
+    // Valida que los valores se ingresaron correctamente
+    expect(pesoInput.props.value).toBe('70');
+    expect(alturaInput.props.value).toBe('175');
+  
     // Simula el cálculo
-    fireEvent.press(getByText('Calcular'));
-
-      // Agrega un `waitFor` si la navegación ocurre después de una operación asincrónica
-    await waitFor(() => {
-        expect(navigateMock).toHaveBeenCalledWith('Recetas', { tipo: 'Normal' });
+    await act(async () => {
+      fireEvent.press(getByText('Calcular'));
     });
+  
+    // Espera que navigate sea llamado con los argumentos correctos
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith('Recetas', { tipo: 'Normal' });
+    });
+  
     
 
 

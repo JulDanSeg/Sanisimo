@@ -11,9 +11,9 @@ const firebaseConfig = {
     appId: "1:154847434169:web:ce0ce0f9309a09e5741268"
   };
 
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 connectFirestoreEmulator(db, "localthost", 8080);
-export {db};
+export {db, auth, app};
